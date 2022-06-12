@@ -1,5 +1,8 @@
 console.log('[Leandro208] Flappy Bird');
 
+const hit = new Audio();
+hit.src = './efeitos/hit.wav'
+
 const sprites = new Image();
 sprites.src = './sprites.png';
 
@@ -90,7 +93,11 @@ function criaflappy() {
         velocidade: 0,
         atualiza() {
             if (fazColisao(flappyBird, chao)) {
-                mudaTela(Telas.INICIO);
+                hit.play();
+                setTimeout(() => {
+                    mudaTela(Telas.INICIO);
+                }, 500);
+                return;
             }
             flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
             flappyBird.y = flappyBird.y + flappyBird.velocidade;
