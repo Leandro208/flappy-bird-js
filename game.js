@@ -16,6 +16,8 @@ sprites.src = './sprites.png';
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
+let comp = 0;
+
 let recordeUsuario = 0;
 
 const planoDeFundo = {
@@ -258,7 +260,16 @@ function criaCanos() {
                 if (peFlappy >= par.canoChao.y) {
                     return true;
                 }
-                ponto.play();
+
+                //2 metodo de pontuacao
+                comp = comp + 1;
+
+                if (comp == 48) {
+                    globais.placar.pontuacao = globais.placar.pontuacao + 1;
+                    comp = 0;
+                    ponto.play();
+                }
+
 
 
 
@@ -306,11 +317,13 @@ function criaPlacar() {
             placar.pontuacao
         },
         atualiza() {
-            const intervaloFrame = 20;
-            const passouOIntervalo = frames % intervaloFrame === 0;
-            if (passouOIntervalo) {
-                placar.pontuacao = placar.pontuacao + 1;
-            }
+            // 1 metodo de contagem de pontos
+            // const intervaloFrame = 20;
+            // const passouOIntervalo = frames % intervaloFrame === 0;
+            // if (passouOIntervalo) {
+            //    placar.pontuacao = placar.pontuacao + 1;
+
+            //}
 
         }
     }
