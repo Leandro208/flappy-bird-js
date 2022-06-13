@@ -16,6 +16,7 @@ sprites.src = './sprites.png';
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
+let recordeUsuario = 0;
 
 const planoDeFundo = {
     spriteX: 390,
@@ -111,6 +112,9 @@ function criaflappy() {
         velocidade: 0,
         atualiza() {
             if (fazColisao(flappyBird, globais.chao)) {
+                if (recordeUsuario < globais.placar.pontuacao) {
+                    recordeUsuario = globais.placar.pontuacao;
+                }
                 hit.play();
 
                 mudaTela(Telas.GAME_OVER);
@@ -275,6 +279,9 @@ function criaCanos() {
                 par.x = par.x - 2;
 
                 if (canos.temColisaoflappy(par)) {
+                    if (recordeUsuario < globais.placar.pontuacao) {
+                        recordeUsuario = globais.placar.pontuacao;
+                    }
                     hit.play();
                     mudaTela(Telas.GAME_OVER)
                 }
@@ -308,6 +315,19 @@ function criaPlacar() {
         }
     }
     return placar;
+}
+
+function criaRecord() {
+    const record = {
+        desenha() {
+            ctx.font = '35px "VT323"';
+            ctx.textAlign = 'right';
+            ctx.fillStyle = 'white';
+            ctx.fillText(`${recordeUsuario}`, canvas.width - 10, 60);
+            recordeUsuario
+        }
+    }
+    return record;
 }
 
 //telas
@@ -348,6 +368,7 @@ const Telas = {
 Telas.JOGO = {
     inicializa() {
         globais.placar = criaPlacar();
+        globais.record = criaRecord();
     },
     desenha() {
         planoDeFundo.desenha();
@@ -355,6 +376,7 @@ Telas.JOGO = {
         globais.chao.desenha();
         globais.flappyBird.desenha();
         globais.placar.desenha();
+        globais.record.desenha();
     },
     click() {
 
@@ -364,7 +386,7 @@ Telas.JOGO = {
         globais.canos.atualiza();
         globais.chao.atualiza();
         globais.flappyBird.atualiza();
-        globais.placar.atualiza()
+        globais.placar.atualiza();
     }
 };
 
