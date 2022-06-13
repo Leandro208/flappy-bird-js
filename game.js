@@ -2,7 +2,13 @@ console.log('[Leandro208] Flappy Bird');
 
 let frames = 0;
 const hit = new Audio();
-hit.src = './efeitos/hit.wav'
+hit.src = './efeitos/hit.wav';
+
+const pulo = new Audio();
+pulo.src = './efeitos/pulo.wav';
+
+const ponto = new Audio();
+ponto.src = './efeitos/ponto.wav';
 
 const sprites = new Image();
 sprites.src = './sprites.png';
@@ -98,6 +104,7 @@ function criaflappy() {
         y: 50,
         pulo: 4.6,
         pula() {
+            pulo.play();
             flappyBird.velocidade = -flappyBird.pulo;
         },
         gravidade: 0.25,
@@ -247,6 +254,9 @@ function criaCanos() {
                 if (peFlappy >= par.canoChao.y) {
                     return true;
                 }
+                ponto.play();
+
+
 
             }
 
@@ -347,6 +357,7 @@ Telas.JOGO = {
         globais.placar.desenha();
     },
     click() {
+
         globais.flappyBird.pula();
     },
     atualiza() {
