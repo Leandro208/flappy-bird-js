@@ -20,6 +20,8 @@ let comp = 0;
 
 let recordeUsuario = 0;
 
+let verificaRecorde = false;
+
 const planoDeFundo = {
     spriteX: 390,
     spriteY: 0,
@@ -115,7 +117,10 @@ function criaflappy() {
         atualiza() {
             if (fazColisao(flappyBird, globais.chao)) {
                 if (recordeUsuario < globais.placar.pontuacao) {
+                    verificaRecorde = true;
                     recordeUsuario = globais.placar.pontuacao;
+                } else {
+                    verificaRecorde = false;
                 }
                 hit.play();
 
@@ -270,9 +275,6 @@ function criaCanos() {
                     ponto.play();
                 }
 
-
-
-
             }
 
             return false;
@@ -291,7 +293,10 @@ function criaCanos() {
 
                 if (canos.temColisaoflappy(par)) {
                     if (recordeUsuario < globais.placar.pontuacao) {
+                        verificaRecorde = true;
                         recordeUsuario = globais.placar.pontuacao;
+                    } else {
+                        verificaRecorde = false;
                     }
                     hit.play();
                     mudaTela(Telas.GAME_OVER)
@@ -316,6 +321,11 @@ function criaPlacar() {
             ctx.fillText(`${placar.pontuacao}`, canvas.width - 10, 35);
             placar.pontuacao
         },
+        desenhaplacarFim() {
+            ctx.fillStyle = '#e1a110';
+            ctx.fillText(`${placar.pontuacao}`, canvas.width - 80, 145);
+            placar.pontuacao
+        },
         atualiza() {
             // 1 metodo de contagem de pontos
             // const intervaloFrame = 20;
@@ -336,12 +346,29 @@ function criaRecord() {
             ctx.font = '35px "VT323"';
             ctx.textAlign = 'right';
             ctx.fillStyle = 'white';
-            ctx.fillText(`${recordeUsuario}`, canvas.width - 10, 60);
+            ctx.fillText(`${recordeUsuario}`, canvas.width - 10, 65);
+            recordeUsuario
+        },
+        desenhaRecordeFim() {
+            ctx.font = '30px "VT323"';
+            if (verificaRecorde) {
+
+                ctx.fillStyle = 'red';
+                ctx.fillRect(canvas.width - 142, 152, 38, 15);
+                ctx.fillStyle = 'white';
+                ctx.fillText(`new`, canvas.width - 105, 165,);
+
+            }
+
+            ctx.fillStyle = '#e1a110';
+            ctx.fillText(`${recordeUsuario}`, canvas.width - 80, 188);
             recordeUsuario
         }
     }
     return record;
 }
+
+
 
 //telas
 const globais = {};
@@ -365,7 +392,6 @@ const Telas = {
         desenha() {
             planoDeFundo.desenha();
             globais.flappyBird.desenha();
-
             globais.chao.desenha();
             mensagemGetReady.desenha();
         },
@@ -392,7 +418,6 @@ Telas.JOGO = {
         globais.record.desenha();
     },
     click() {
-
         globais.flappyBird.pula();
     },
     atualiza() {
@@ -409,6 +434,8 @@ Telas.GAME_OVER = {
     },
     desenha() {
         mensagemGameOver.desenha();
+        globais.placar.desenhaplacarFim();
+        globais.record.desenhaRecordeFim()
     },
     atualiza() {
 
